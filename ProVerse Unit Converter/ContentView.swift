@@ -14,38 +14,22 @@ struct ContentView: View {
     
     @FocusState private var isInputActive: Bool
     
-//    let temperatureUnits = ["C°", "K°", "F°"]
     let temperatureUnitsFrom = ["C°", "K°", "F°"]
     let temperatureUnitsTo = ["C°", "K°", "F°"]
     
-    var resultValue: Double {
-        return convertTemperature(from: temperatureUnitFrom, to: temperatureUnitTo)
+    var inputValueInCelsius: Double {
+        switch temperatureUnitFrom {
+        case "F°": return (inputValue - 32) * 5 / 9
+        case "K°": return inputValue - 273.15
+        default: return inputValue
+        }
     }
     
-    func convertTemperature(from fromUnit: String, to toUnit: String) -> Double {
-        switch temperatureUnitFrom {
-        case "C°": do {
-            switch temperatureUnitTo {
-            case "K°": return inputValue + 273.15
-            case "F°": return (inputValue * 9 / 5) + 32
-            default: return inputValue
-            }
-        }
-        case "K°": do {
-            switch temperatureUnitTo {
-            case "C°": return inputValue - 273.15
-            case "F°": return (inputValue - 273.15) * (9 / 5) + 32
-            default: return inputValue
-            }
-        }
-        case "F°": do {
-            switch temperatureUnitTo {
-            case "C°": return (inputValue - 32) * 5 / 9
-            case "K°": return (inputValue - 32) * (5 / 9) + 273.15
-            default: return inputValue
-            }
-        }
-        default: return inputValue
+    var resultValue: Double {
+        switch temperatureUnitTo {
+        case "K°": return inputValueInCelsius + 273.15
+        case "F°": return (inputValueInCelsius * 9 / 5) + 32
+        default: return inputValueInCelsius
         }
     }
     
